@@ -2,4 +2,5 @@
 
 pure-pursuit
 
-![Test Image 1](pure_pursuit_trajectory.png
+
+![Alt text](/home/vamsy/pure_pursuit_trajectory.png?raw=true "Optional Title")
