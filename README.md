@@ -2,4 +2,4 @@
 
 pure-pursuit
 
-pure_pursuit_trajectory.png
+![Test Image 1](pure_pursuit_trajectory.png
