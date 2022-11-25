@@ -83,8 +83,9 @@ class TargetCourse:
                 if dist_this_index < dist_next_index:
                     break
 
-                ind = ind + 1 if ind + 1 <len(self.cx) else ind
+                ind = ind + 1 if (ind + 1 )<len(self.cx) else ind
                 dist_this_index = dist_next_index
+            self.old_nearest_point_index = ind
 
         Lf = k*state.v + Lfc
 
@@ -172,7 +173,6 @@ def main():
                                             lambda event: [exit(0) if event.key == 'escape' else None])
                         
             plot_arrow(state.x, state.y, state.yaw)
-            print("dvjhvbufb")
             plt.plot(cx, cy, "-r", label="course")
             plt.plot(states.x, states.y, "-b", label="trajectory")
             plt.plot(cx[target_ind], cy[target_ind], "xg", label="target")
@@ -192,7 +192,7 @@ def main():
         plt.ylabel("y[m]")
         plt.axis("equal")
         plt.grid(True)
-        print("dvjhvbufb")
+
 
         plt.subplots(1)
         plt.plot(states.t, [iv * 3.6 for iv in states.v], "-r")
