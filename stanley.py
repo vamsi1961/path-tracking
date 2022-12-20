@@ -49,8 +49,6 @@ class State(object):
     def update(self, acceleration, delta):
         """
 
-
-        
         Update the state of the vehicle.
         Stanley Control uses bicycle model.
         :param acceleration: (float) Acceleration
