@@ -13,3 +13,8 @@ for i in range(n-1):
     A[i+1,i] = h[i]
     A[i,i+1] = h[i]
 print(A)
+
+
+
+
+
