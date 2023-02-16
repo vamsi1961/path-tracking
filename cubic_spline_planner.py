@@ -1,7 +1,4 @@
-"""
-Cubic spline planner
-Author: Atsushi Sakai(@Atsushi_twi)
-"""
+
 import math
 import numpy as np
 import bisect
