@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
-
 k = 0.1 # look forward gain
 Lfc = 2.0 # look-ahead distance
 Kp = 1.0 # speed proportional gain
@@ -43,7 +42,6 @@ class States:
         self.t = []
 
     def append(self,t,state):
-
         self.x.append(state.x)
         self.y.append(state.y)
         self.yaw.append(state.yaw)
@@ -127,7 +125,7 @@ def plot_arrow(x,y,yaw,length = 1.0,width = 0.5, fc = 'r' , ec = 'k'):
             plot_arrow(ix,iy,iyaw)
     
     else:
-        plt.arrow(x, y, length * math.cos(yaw), length * math.sin(yaw),
+        plt.arrow(x, y, WB * math.cos(yaw), WB * math.sin(yaw),
                   fc=fc, ec=ec, head_width=width, head_length=width)
         plt.plot(x, y)
 
@@ -135,13 +133,13 @@ def plot_arrow(x,y,yaw,length = 1.0,width = 0.5, fc = 'r' , ec = 'k'):
 def main():
 
     cx = np.arange(0,50,0.5)
-    cy = [math.sin(ix/5.0)* ix / 2.0 for ix in cx]
+    cy = [( math.cos(ix/5.0)+  math.sin(ix/5.0) )* ix / 2.0 for ix in cx]
 
     target_speed = 10.0/3.6
 
     T = 100.0 
 
-    state = State(x = 0.0,y = -10.0,yaw = 0.0,v =0.0)
+    state = State(x = 0.0,y = -20.0,yaw = 0.0,v =0.0)
 
     Last_index = len(cx) - 1
 
@@ -180,7 +178,6 @@ def main():
         plt.plot(cx, cy, ".r", label="course")
         plt.plot(states.x, states.y, "-b", label="trajectory")
         plt.legend()
-        plt.xlabel("x[m]")
         plt.ylabel("y[m]")
         plt.axis("equal")
         plt.grid(True)
