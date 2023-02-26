@@ -10,8 +10,6 @@ dt = 0.1 # time
 WB  = 2.9 #ld length of wheel
 show_animation = True
 
-
-
 class State:
 
     def __init__(self, x=0.0, y=0.0, yaw=0.0, v=0.0):
@@ -59,7 +57,7 @@ class TargetCourse:
         self.cy = cy
         self.old_nearest_point_index = None
 
-    def  search_target_index(self,state):
+    def search_target_index(self,state):
         
         if self.old_nearest_point_index is None:
             dx = [state.rear_x - icx for icx in self.cx]
@@ -77,7 +75,7 @@ class TargetCourse:
             while True:
 
                 dist_next_index = state.calc_distance(self.cx[ind+1],self.cy[ind+1])
-
+ 
                 if dist_this_index < dist_next_index:
                     break
 
@@ -88,12 +86,10 @@ class TargetCourse:
         Lf = k*state.v + Lfc
 
         while Lf > state.calc_distance(self.cx[ind],self.cy[ind]):
-            
+
             if (ind + 1) >= len(self.cx):
                 break
-                
             ind = ind + 1
-
         return ind,Lf
 
 def pure_pursuit_steer_control(state,trajectory,pind):
@@ -106,7 +102,6 @@ def pure_pursuit_steer_control(state,trajectory,pind):
     if ind < len(trajectory.cx):
         tx = trajectory.cx[ind]
         ty = trajectory.cy[ind]
-        
 
     else:
         tx = trajectory.cx[-1]
@@ -114,7 +109,6 @@ def pure_pursuit_steer_control(state,trajectory,pind):
         ind = len(trajectory.cx) - 1
 
     alpha = math.atan2(ty - state.rear_y, tx-state.rear_x) - state.yaw
-
     delta = math.atan2(2.0*WB*math.sin(alpha) / Lf,1.0)
 
     return delta,ind
@@ -169,7 +163,7 @@ def main():
             plt.cla() # clear the current axes
             plt.gcf().canvas.mpl_connect('key_release_event',
                                             lambda event: [exit(0) if event.key == 'escape' else None])
-                        
+
             plot_arrow(state.x, state.y, state.yaw)
             plt.plot(cx, cy, "-r", label="course")
             plt.plot(states.x, states.y, "-b", label="trajectory")
