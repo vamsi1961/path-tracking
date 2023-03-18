@@ -1,11 +1,9 @@
-
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
 import os
 
-sys.path.append(os.path.dirname(os.path.abspath(__file__)) +
-                "/../../PathPlanning/CubicSpline/")
+sys.path.append(os.path.dirname(os.path.abspath(__file__)) +  "/../../PathPlanning/CubicSpline/")
 
 try:
     import cubic_spline_planner
@@ -23,32 +21,21 @@ show_animation = True
 
 
 class State(object):
-    """
-    Class representing the state of a vehicle.
-    :param x: (float) x-coordinate
-    :param y: (float) y-coordinate
-    :param yaw: (float) yaw angle
-    :param v: (float) speed
-    """
 
     def __init__(self, x=0.0, y=0.0, yaw=0.0, v=0.0):
-        """Instantiate the object."""
+
         super(State, self).__init__()
         self.x = x
         self.y = y
         self.yaw = yaw
         self.v = v
 
+
+
+
     def update(self, acceleration, delta):
-        """
 
-        Update the state of the vehicle.
-        Stanley Control uses bicycle model.
-        :param acceleration: (float) Acceleration
-        :param delta: (float) Steering
-        """
         delta = np.clip(delta, -max_steer, max_steer)
-
         self.x += self.v * np.cos(self.yaw) * dt
         self.y += self.v * np.sin(self.yaw) * dt
         self.yaw += self.v / L * np.tan(delta) * dt
@@ -57,27 +44,12 @@ class State(object):
 
 
 def pid_control(target, current):
-    """
-    Proportional control for the speed.
-    :param target: (float)
-    :param current: (float)
-    :return: (float)
-    """
     return Kp * (target - current)
 
 
 def stanley_control(state, cx, cy, cyaw, last_target_idx):
-    """
-    Stanley steering control.
-    :param state: (State object)
-    :param cx: ([float])
-    :param cy: ([float])
-    :param cyaw: ([float])
-    :param last_target_idx: (int)
-    :return: (float, int)
-    """
-    current_target_idx, error_front_axle = calc_target_index(state, cx, cy)
 
+    current_target_idx, error_front_axle = calc_target_index(state, cx, cy)
     if last_target_idx >= current_target_idx:
         current_target_idx = last_target_idx
 
@@ -92,11 +64,7 @@ def stanley_control(state, cx, cy, cyaw, last_target_idx):
 
 
 def normalize_angle(angle):
-    """
-    Normalize an angle to [-pi, pi].
-    :param angle: (float)
-    :return: (float) Angle in radian in [-pi, pi]
-    """
+
     while angle > np.pi:
         angle -= 2.0 * np.pi
 
@@ -107,13 +75,7 @@ def normalize_angle(angle):
 
 
 def calc_target_index(state, cx, cy):
-    """
-    Compute index in the trajectory list of the target.
-    :param state: (State object)
-    :param cx: [float]
-    :param cy: [float]
-    :return: (int, float)
-    """
+
     # Calc front axle position
     fx = state.x + L * np.cos(state.yaw)
     fy = state.y + L * np.sin(state.yaw)
@@ -125,21 +87,18 @@ def calc_target_index(state, cx, cy):
     target_idx = np.argmin(d)
 
     # Project RMS error onto front axle vector
-    front_axle_vec = [-np.cos(state.yaw + np.pi / 2),
-                      -np.sin(state.yaw + np.pi / 2)]
+    front_axle_vec = [-np.cos(state.yaw + np.pi / 2), -np.sin(state.yaw + np.pi / 2)]
     error_front_axle = np.dot([dx[target_idx], dy[target_idx]], front_axle_vec)
 
     return target_idx, error_front_axle
 
 
 def main():
-    """Plot an example of Stanley steering control on a cubic spline."""
     #  target course
     ax = [0.0, 100.0, 100.0, 50.0, 60.0]
     ay = [0.0, 0.0, -30.0, -20.0, 0.0]
 
-    cx, cy, cyaw, ck, s = cubic_spline_planner.calc_spline_course(
-        ax, ay, ds=0.1)
+    cx, cy, cyaw, ck, s = cubic_spline_planner.calc_spline_course(ax, ay, ds=0.1)
 
     target_speed = 30.0 / 3.6  # [m/s]
 
